@@ -7,7 +7,7 @@ interface IProps {
 
 const ProductPrice = (props: IProps) => {
   const { value, className } = props;
-  const stringValue = value.toFixed(2);
+  const stringValue = (+value).toFixed(2);
   const [intValue, floatValue] = stringValue.split('.');
 
   return <p className={cn('text-2xl', className)}>
