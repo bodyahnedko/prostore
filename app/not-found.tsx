@@ -10,8 +10,8 @@ const Notfound = () => {
       <Image src="/images/logo.svg" alt={`${APP_NAME} logo`} height={48} width={48} priority />
       <div className="p-6 w-1/3 rounded-lg shadow-md text-center">
         <h1 className="text-3xl font-bold mb-4">Page Not Found</h1>
-        <p className="text-destructive">Couldn't find requested page</p>
-        <Button variant={'outline'} className="mt-5" onClick={() => (window.location.href = '/')}>
+        <p className="text-destructive">Couldnt find requested page</p>
+        <Button variant={'outline'} className={'mt-5'} onClick={() => (window.location.href = '/')}>
           Back To home
         </Button>
       </div>
