@@ -4,7 +4,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React from 'react';
 import SignInForm from './signin-form';
-import { signInWithCredentials } from '@/lib/actions/user.action';
 
 const SingInPage = async () => {
   return (
