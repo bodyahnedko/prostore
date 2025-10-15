@@ -9,7 +9,7 @@ import Link from 'next/link';
 import { signInWithCredentials } from '@/lib/actions/user.action';
 import { useFormStatus } from 'react-dom';
 
-const SignInForm = () => {
+const SignInForm = ({ callbackUrl = '/' }: { callbackUrl?: string }) => {
   const router = useRouter();
   const [state, formAction] = useActionState(signInWithCredentials, {
     success: false,
@@ -18,9 +18,9 @@ const SignInForm = () => {
 
   useEffect(() => {
     if (state?.success) {
-      router.replace('/');
+      router.replace(callbackUrl || '/');
     }
-  }, [state?.success, router]);
+  }, [state?.success, router, callbackUrl]);
 
   const SignInButton = () => {
     const { pending } = useFormStatus();
@@ -34,6 +34,7 @@ const SignInForm = () => {
 
   return (
     <form action={formAction} className="space-y-3">
+      <input type="hidden" name="callbackUrl" value={callbackUrl || '/'} />
       <div className="space-y-5">
         <Label htmlFor="email">Email</Label>
         <Input id="email" name="email" type="email" autoComplete="email" required />

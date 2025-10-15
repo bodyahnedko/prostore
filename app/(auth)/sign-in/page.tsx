@@ -5,7 +5,9 @@ import Link from 'next/link';
 import React from 'react';
 import SignInForm from './signin-form';
 
-const SingInPage = async () => {
+const SingInPage = async (props: { searchParams: Promise<{ callbackUrl?: string }> }) => {
+  const { callbackUrl } = await props.searchParams;
+
   return (
     <div className="w-full max-w-md mx-auto">
       <Card>
@@ -16,7 +18,7 @@ const SingInPage = async () => {
           <CardTitle className="text-center">Sign In</CardTitle>
           <CardDescription className="text-center">Sign in to your account</CardDescription>
           <CardContent>
-            <SignInForm />
+            <SignInForm  callbackUrl={callbackUrl} />
           </CardContent>
         </CardHeader>
       </Card>

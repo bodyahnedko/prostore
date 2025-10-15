@@ -30,6 +30,7 @@ export async function signInWithCredentials(prevState: SignInResult, formData: F
       redirect: false,
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     if (res && (res as any).error) {
       return {
         success: false,
@@ -40,7 +41,7 @@ export async function signInWithCredentials(prevState: SignInResult, formData: F
     return {
       success: true,
     };
-  } catch (error: any) {
+  } catch (error: unknown) {
     console.error(error);
     return {
       success: false,
@@ -54,7 +55,9 @@ export async function signOutUser(): Promise<{ success: boolean; message?: strin
     await signOut({ redirect: false });
 
     return { success: true };
-  } catch (error: any) {
+  } catch (error: unknown) {
+    console.error(error);
+
     return {
       success: false,
       message: 'Sign out failed',
