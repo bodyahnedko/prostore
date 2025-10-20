@@ -3,33 +3,35 @@ import { Inter } from 'next/font/google';
 import '@/app/assets/styles/globals.css';
 import { APP_DESCRIPTION, APP_NAME, SERVER_URL } from '@/lib/constants';
 import { ThemeProvider } from 'next-themes';
+import { Toaster } from '@/components/ui/sonner';
 
 const fontInter = Inter({
-  variable: '--font-inter',
-  subsets: ['latin'],
+    variable: '--font-inter',
+    subsets: ['latin'],
 });
 
 export const metadata: Metadata = {
-  title: {
-    template: `%s | Prostore`,
-    default: APP_NAME,
-  },
-  description: APP_DESCRIPTION,
-  metadataBase: new URL(SERVER_URL),
+    title: {
+        template: `%s | Prostore`,
+        default: APP_NAME,
+    },
+    description: APP_DESCRIPTION,
+    metadataBase: new URL(SERVER_URL),
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={`${fontInter.variable} antialiased`}>
-        <ThemeProvider attribute={'class'} defaultTheme={'light'} enableSystem disableTransitionOnChange>
-          {children}
-        </ThemeProvider>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en" suppressHydrationWarning>
+            <body className={`${fontInter.variable} antialiased`}>
+                <ThemeProvider attribute={'class'} defaultTheme={'light'} enableSystem disableTransitionOnChange>
+                    {children}
+                    <Toaster richColors />
+                </ThemeProvider>
+            </body>
+        </html>
+    );
 }

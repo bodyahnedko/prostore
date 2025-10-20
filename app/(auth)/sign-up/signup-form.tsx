@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { Label } from '@radix-ui/react-label';
 import { useFormStatus } from 'react-dom';
-import { signUpUser } from '@/lib/actions/user.action';
+import { signUpUser } from '@/lib/actions/user.actions';
 import Link from 'next/link';
 
 const SignUpForm = ({ callbackUrl = '/' }: { callbackUrl?: string }) => {

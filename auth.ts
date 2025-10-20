@@ -3,6 +3,8 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from './db/prisma';
 import { compareSync } from 'bcrypt-ts-edge';
+import { NextResponse } from 'next/server';
+import { authConfig } from './auth.config';
 
 export const config: NextAuthConfig = {
     pages: {
@@ -60,7 +62,7 @@ export const config: NextAuthConfig = {
             return session;
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        async jwt({ token, user, trigger, session }: any) {
+        async jwt({ token, user }: any) {
             if (user) {
                 token.role = user.role;
 
@@ -75,6 +77,7 @@ export const config: NextAuthConfig = {
             }
             return token;
         },
+        ...authConfig.callbacks,
     },
 };
 
