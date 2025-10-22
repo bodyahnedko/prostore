@@ -5,7 +5,8 @@ import { Button } from '@/components/ui/button';
 import { Cart, CartItem } from '@/types';
 import { addItemToCart, removeItemFromCart } from '@/lib/actions/cart.actions';
 import { useRouter } from 'next/navigation';
-import { Loader, Minus, Plus } from 'lucide-react';
+import { Loader } from 'lucide-react';
+import AddRemoveItem from './add-remove-item';
 
 const AddToCart = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
     const router = useRouter();
@@ -46,15 +47,12 @@ const AddToCart = ({ item, cart }: { item: CartItem; cart?: Cart }) => {
     const existCartItem = cart && cart.items.find((x) => x.productId === item.productId);
 
     return existCartItem ? (
-        <div className='flex items-center justify-center'>
-            <Button type="button" variant={'outline'} onClick={handleRemoveFromCart} disabled={isPending}>
-                {isPending ? <Loader className="w-4 h-4 animate-spin" /> : <Minus className="h-4 w-4" />}
-            </Button>
-            <span className="px-2">{isPending ? <Loader className="w-4 h-4 animate-spin" /> : existCartItem.qty}</span>
-            <Button type="button" variant={'outline'} onClick={handleAddToCart} disabled={isPending}>
-                {isPending ? <Loader className="w-4 h-4 animate-spin" /> : <Plus className="h-4 w-4" />}
-            </Button>
-        </div>
+        <AddRemoveItem
+            handleRemoveFromCart={handleRemoveFromCart}
+            handleAddToCart={handleAddToCart}
+            qty={existCartItem.qty}
+            isPending={isPending}
+        />
     ) : (
         <Button className="w-full" onClick={handleAddToCart} disabled={isPending}>
             {isPending ? <Loader className="w-4 h-4 animate-spin" /> : 'Add To Card'}
