@@ -1,41 +1,18 @@
 'use client';
-import AddRemoveItem from '@/components/shared/product/add-remove-item';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
-import { addItemToCart, removeItemFromCart } from '@/lib/actions/cart.actions';
+import { Table, TableBody, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { formatCurrency } from '@/lib/utils';
-import { Cart, CartItem } from '@/types';
+import { Cart } from '@/types';
 import { ArrowRight, Loader } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import React, { useTransition } from 'react';
-import { toast } from 'sonner';
+import CartItemRow from '@/components/shared/cart/cart-item';
 
 const CartTable = ({ cart }: { cart?: Cart }) => {
     const router = useRouter();
     const [isPending, startTransition] = useTransition();
-
-    const handleAddToCart = (item: CartItem) => {
-        startTransition(async () => {
-            const res = await addItemToCart(item);
-
-            if (!res.success) {
-                toast.error(res.message);
-            }
-        });
-    };
-
-    const handleRemoveFromCart = (item: CartItem) => {
-        startTransition(async () => {
-            const res = await removeItemFromCart(item.productId);
-
-            if (!res.success) {
-                toast.error(res.message);
-            }
-        });
-    };
 
     return (
         <>
@@ -56,23 +33,7 @@ const CartTable = ({ cart }: { cart?: Cart }) => {
                             </TableHeader>
                             <TableBody>
                                 {cart.items.map((item) => (
-                                    <TableRow key={item.slug}>
-                                        <TableCell>
-                                            <Link href={`/product/${item.slug}`} className="flex items-center">
-                                                <Image src={item.image} alt={item.name} width={50} height={50} />
-                                                <span className="px-2">{item.name}</span>
-                                            </Link>
-                                        </TableCell>
-                                        <TableCell className="flex-center gap-2">
-                                            <AddRemoveItem
-                                                handleRemoveFromCart={() => handleRemoveFromCart(item)}
-                                                handleAddToCart={() => handleAddToCart(item)}
-                                                qty={item.qty}
-                                                isPending={isPending}
-                                            />
-                                        </TableCell>
-                                        <TableCell className="text-right">${item.price}</TableCell>
-                                    </TableRow>
+                                    <CartItemRow key={item.slug} item={item} />
                                 ))}
                             </TableBody>
                         </Table>
