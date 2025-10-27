@@ -4,6 +4,8 @@ import { getUserById } from '@/lib/actions/user.actions';
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 import React from 'react';
+import ShippingAddressForm from './shipping-address-form';
+import { ShippingAddress } from '@/types';
 
 export const metadata: Metadata = {
     title: 'Shipping Address',
@@ -22,7 +24,11 @@ const ShippingAddressPage = async () => {
 
     const user = await getUserById(userId);
 
-    return <div>ShippingAddressPage</div>;
+    return (
+        <div>
+            <ShippingAddressForm address={user.address as ShippingAddress} />
+        </div>
+    );
 };
 
 export default ShippingAddressPage;
