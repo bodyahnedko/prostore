@@ -3,8 +3,8 @@ import { PrismaAdapter } from '@auth/prisma-adapter';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { prisma } from './db/prisma';
 import { compareSync } from 'bcrypt-ts-edge';
-import { NextResponse } from 'next/server';
 import { authConfig } from './auth.config';
+import { cookies } from 'next/headers';
 
 export const config: NextAuthConfig = {
     pages: {
@@ -62,7 +62,7 @@ export const config: NextAuthConfig = {
             return session;
         },
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        async jwt({ token, user }: any) {
+        async jwt({ token, user, trigger }: any) {
             if (user) {
                 token.role = user.role;
 
@@ -73,6 +73,32 @@ export const config: NextAuthConfig = {
                         where: { id: user.id },
                         data: { name: token.name },
                     });
+                }
+
+                if (trigger === 'signIn' || trigger === 'signUp') {
+                    const cookiesObject = await cookies();
+                    const sessionCartId = cookiesObject.get('sessionCartId')?.value;
+
+                    if (sessionCartId) {
+                        const sessionCart = await prisma.cart.findFirst({
+                            where: { sessionCartId },
+                        });
+
+                        if (sessionCart) {
+                            await prisma.cart.deleteMany({
+                                where: { userId: user.id },
+                            });
+
+                            await prisma.cart.update({
+                                where: {
+                                    id: sessionCart.id,
+                                },
+                                data: {
+                                    userId: user.id,
+                                },
+                            });
+                        }
+                    }
                 }
             }
             return token;
